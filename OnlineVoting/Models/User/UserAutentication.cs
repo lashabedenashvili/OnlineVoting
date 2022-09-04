@@ -3,6 +3,7 @@
 
 namespace OnlineVoting.Api.Models.User
 {
+    using Microsoft.EntityFrameworkCore;
     using OnlineVoting.Data;
     public class UserAutentication : IUserAutentication
     {
@@ -13,37 +14,63 @@ namespace OnlineVoting.Api.Models.User
             _context = context;
         }
 
-       
-        public Task<ServiceResponce<string>> Login(string username, string password)
+        public async Task<ServiceResponce<string>> Login(string personalnumber, string password)
         {
-            
+            var response=new ServiceResponce<string>();
+            var user = await _context.users.FirstOrDefaultAsync(x => x.PrivateNumber.Equals(personalnumber));
+            if(user == null)
+            {
+                response.Success = false;
+                response.Message = "User not found.";
+            }
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                response.Success=false;
+                response.Message = "Password is not correct.";
+            }
+            return response;
         }
 
-        public Task<ServiceResponce<bool>> PersonNotExistDatabase(User user)
+        public async Task<ServiceResponce<int>> Registration(User user, string password)
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponce<int>();
+            if (await UserExist(user.PrivateNumber))
+            {
+                response.Success = false;
+                response.Message = "User already exist.";
+            }
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] paswwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = paswwordSalt;
+            _context.users.Add(user);
+            response.Success = true;
+            response.Data = user.Id;
+            return response;
         }
 
-        public Task<ServiceResponce<int>> Registration(User user, string password)
+        public async Task<bool> UserExist(string personalNumber)
         {
-            throw new NotImplementedException();
+
+            if (await _context.users.AnyAsync(x => x.PrivateNumber.Equals(personalNumber)))
+            {
+                return false;
+            }
+            return true;
         }
 
-        public Task<ServiceResponce<bool>> UserExist(string username)
+        
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            throw new NotImplementedException();
-        }
-        private void CreatePasswordHash(string password, byte[]passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac=new System.Security.Cryptography.HMACSHA512())
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash=hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using(var hmac=new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computeHash.SequenceEqual(passwordHash);
