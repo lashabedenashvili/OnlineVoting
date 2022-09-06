@@ -17,7 +17,7 @@ namespace OnlineVoting.Api.Models.User
         public async Task<ServiceResponce<string>> Login(string personalnumber, string password)
         {
             var response=new ServiceResponce<string>();
-            var user = await _context.users.FirstOrDefaultAsync(x => x.PrivateNumber.Equals(personalnumber));
+            var user = await _context.users.FirstOrDefaultAsync(x => x.PersonalNumber.Equals(personalnumber));
             if(user == null)
             {
                 response.Success = false;
@@ -34,15 +34,17 @@ namespace OnlineVoting.Api.Models.User
         public async Task<ServiceResponce<int>> Registration(User user, string password)
         {
             var response = new ServiceResponce<int>();
-            if (await UserExist(user.PrivateNumber))
+            if (await UserExist(user.PersonalNumber))
             {
                 response.Success = false;
                 response.Message = "User already exist.";
+                return response;
             }
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] paswwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = paswwordSalt;
             _context.users.Add(user);
+            _context.saveChanges();
             response.Success = true;
             response.Data = user.Id;
             return response;
@@ -50,12 +52,7 @@ namespace OnlineVoting.Api.Models.User
 
         public async Task<bool> UserExist(string personalNumber)
         {
-
-            if (await _context.users.AnyAsync(x => x.PrivateNumber.Equals(personalNumber)))
-            {
-                return false;
-            }
-            return true;
+            return await _context.users.AnyAsync(x => x.PersonalNumber.Equals(personalNumber));
         }
 
         

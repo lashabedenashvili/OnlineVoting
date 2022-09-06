@@ -8,7 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Implementation\" />
-    <Folder Include="Service\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineVoting.Data\OnlineVoting.Data.csproj" />
+    <ProjectReference Include="..\OnlineVoting.Domein\OnlineVoting.Domein.csproj" />
   </ItemGroup>
 
 </Project>

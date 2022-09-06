@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVoting.Domein", "Onli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{71E388F2-CDAE-4E84-A684-E6F9F591FB97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineVoting.Infrastructure", "OnlineVoting.Infrastructure\OnlineVoting.Infrastructure.csproj", "{61E5BBA1-4922-4DC5-80AD-D0F1E040F06D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVoting.Infrastructure", "OnlineVoting.Infrastructure\OnlineVoting.Infrastructure.csproj", "{61E5BBA1-4922-4DC5-80AD-D0F1E040F06D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineVoting.Application", "OnlineVoting.Application\OnlineVoting.Application.csproj", "{B507F190-98B1-4653-9FBD-0092827B4374}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVoting.Application", "OnlineVoting.Application\OnlineVoting.Application.csproj", "{B507F190-98B1-4653-9FBD-0092827B4374}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{506FACC8-02C0-4598-95A8-980D3CD31E4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C8421446-27FA-4822-90EF-FF8E46390778} = {71E388F2-CDAE-4E84-A684-E6F9F591FB97}
+		{E036D029-0689-4F56-885D-9582EEA36AC3} = {506FACC8-02C0-4598-95A8-980D3CD31E4E}
+		{5010D1F2-55EF-4686-95DD-6DB3A5AD0CCC} = {506FACC8-02C0-4598-95A8-980D3CD31E4E}
+		{61E5BBA1-4922-4DC5-80AD-D0F1E040F06D} = {506FACC8-02C0-4598-95A8-980D3CD31E4E}
+		{B507F190-98B1-4653-9FBD-0092827B4374} = {506FACC8-02C0-4598-95A8-980D3CD31E4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61891D79-9476-4197-B54C-01AA2BE712C2}

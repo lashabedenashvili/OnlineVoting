@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using OnlineVoting.Api.Models.User;
 using OnlineVoting.Domein;
+using OnlineVoting.Infrastructure.AutoMapper;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +14,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped<IUserAutentication, UserAutentication>();
+builder.Services.AddScoped<IContext, Context>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
