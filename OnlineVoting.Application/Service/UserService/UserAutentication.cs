@@ -5,6 +5,9 @@ namespace OnlineVoting.Api.Models.User
 {
     using Microsoft.EntityFrameworkCore;
     using OnlineVoting.Data;
+    using OnlineVoting.Infrastructure.Dto;
+    using OnlineVoting.Infrastructure.Dto.UserServiceDto;
+
     public class UserAutentication : IUserAutentication
     {
         private readonly IContext _context;
@@ -14,22 +17,28 @@ namespace OnlineVoting.Api.Models.User
             _context = context;
         }
 
-        public async Task<ServiceResponce<string>> Login(string personalnumber, string password)
+        public async Task<ServiceResponce<string>> Login(UserLoginDto request)
         {
-            var response=new ServiceResponce<string>();
-            var user = await _context.users.FirstOrDefaultAsync(x => x.PersonalNumber.Equals(personalnumber));
-            if(user == null)
+
+            var response = new ServiceResponce<string>();
+            var user = await _context.users.FirstOrDefaultAsync(x => x.PersonalNumber.Equals(request.PersonalNumber));
+
+            if (user == null)
             {
                 response.Success = false;
                 response.Message = "User not found.";
             }
-            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            else if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
-                response.Success=false;
+                response.Success = false;
                 response.Message = "Password is not correct.";
             }
+            else
+                response.Data = user.Name;
             return response;
         }
+
+
 
         public async Task<ServiceResponce<int>> Registration(User user, string password)
         {
@@ -50,12 +59,42 @@ namespace OnlineVoting.Api.Models.User
             return response;
         }
 
+        public async Task<ServiceResponce<string>> UpdateUserPassword(UserUpdatePasswordDto request)
+        {
+            var response = new ServiceResponce<string>();
+            var user = await _context.users.FirstOrDefaultAsync(b => b.PersonalNumber == request.PersonalNumber);
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "User doesnot exist.";
+                return response;
+            }
+
+            if ( !VerifyPasswordHash(request.OdlPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                response.Success = false;
+                response.Message = "Old password is incorect.";
+                return response;
+            }
+            else
+            {
+                CreatePasswordHash(request.NewPassword, out byte[] passwordhash, out byte[] passwordsalt);
+                user.PasswordHash = passwordhash;
+                user.PasswordSalt = passwordsalt;
+                _context.users.Update(user);
+                _context.saveChanges();
+            }
+            return response;
+        }
+
         public async Task<bool> UserExist(string personalNumber)
         {
             return await _context.users.AnyAsync(x => x.PersonalNumber.Equals(personalNumber));
         }
 
-        
+
+
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -73,5 +112,7 @@ namespace OnlineVoting.Api.Models.User
                 return computeHash.SequenceEqual(passwordHash);
             }
         }
+
+        
     }
 }

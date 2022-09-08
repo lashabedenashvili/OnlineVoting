@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace OnlineVoting.Infrastructure.Dto
 {
     public class UserRegistrationDto
