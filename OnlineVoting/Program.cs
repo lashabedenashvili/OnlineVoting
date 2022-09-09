@@ -3,6 +3,7 @@ using OnlineVoting.Api.Models.User;
 using OnlineVoting.Domein;
 using OnlineVoting.Infrastructure.AutoMapper;
 using AutoMapper;
+using OnlineVoting.Application.Service.CandidateService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserAutentication, UserAutentication>();
 builder.Services.AddScoped<IContext, Context>();
+builder.Services.AddScoped<ICandidateService, CandidateService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OnlineVoting.Infrastructure.AutoMapper.CandidateProfile;
 
 namespace OnlineVoting.Infrastructure.AutoMapper
 {
@@ -13,6 +14,8 @@ namespace OnlineVoting.Infrastructure.AutoMapper
         public AutoMapperProfile()
         {
             new UseraAutoMapperProfile();
+            new CandidateAutoMapperProfile();
+
         }
     }
 }

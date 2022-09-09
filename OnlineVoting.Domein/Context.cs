@@ -11,6 +11,7 @@ namespace OnlineVoting.Domein
     public class Context:DbContext,IContext
     {
         public DbSet<User> users { get; set; }
+        public DbSet<Candidate> candidates { get; set; }
         public Context(DbContextOptions<Context> options) : base(options)
         {
 

@@ -10,6 +10,7 @@
         Task<ServiceResponce<string>>Login(UserLoginDto request);
         Task<bool> UserExist(string username);
         Task<ServiceResponce<string>> UpdateUserPassword(UserUpdatePasswordDto request);
+       
         
     }
 }

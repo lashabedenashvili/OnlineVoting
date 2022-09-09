@@ -11,7 +11,9 @@ namespace OnlineVoting.Domein
     public interface IContext
     {
        public DbSet<User> users { get; set; }
-       public int saveChanges();
+        public DbSet<Candidate> candidates { get; set; }
+
+        public int saveChanges();
 
     }
 }
