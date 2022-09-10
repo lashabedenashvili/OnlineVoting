@@ -25,6 +25,8 @@ namespace OnlineVoting.Data
         [Required]
         [MaxLength(15)]
         public string PersonalNumber { get; set; } = string.Empty;
+        public List<Votes> vote { get; set; } = new List<Votes>();
+
 
 
 

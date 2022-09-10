@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineVoting.Domein;
 
@@ -11,9 +12,10 @@ using OnlineVoting.Domein;
 namespace OnlineVoting.Domein.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220910095755_DbSetVotes")]
+    partial class DbSetVotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,8 +113,8 @@ namespace OnlineVoting.Domein.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("Vote")
-                        .HasColumnType("tinyint");
+                    b.Property<decimal>("Vote")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

@@ -12,6 +12,8 @@ namespace OnlineVoting.Domein
     {
        public DbSet<User> users { get; set; }
         public DbSet<Candidate> candidates { get; set; }
+        public DbSet<Votes>votes { get; set; }
+  
 
         public int saveChanges();
 

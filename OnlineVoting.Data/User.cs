@@ -18,6 +18,7 @@ namespace OnlineVoting.Data
         public byte[] ?PasswordHash { get; set; }
         
         public byte[] ?PasswordSalt{ get; set; }
+        public List<Votes> vote { get; set; } = new List<Votes>();
 
     }
 }

@@ -4,6 +4,7 @@ using OnlineVoting.Domein;
 using OnlineVoting.Infrastructure.AutoMapper;
 using AutoMapper;
 using OnlineVoting.Application.Service.CandidateService;
+using OnlineVoting.Application.Service.VoteService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserAutentication, UserAutentication>();
 builder.Services.AddScoped<IContext, Context>();
 builder.Services.AddScoped<ICandidateService, CandidateService>();
+builder.Services.AddScoped<IVotesService, VotesService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 var app = builder.Build();
