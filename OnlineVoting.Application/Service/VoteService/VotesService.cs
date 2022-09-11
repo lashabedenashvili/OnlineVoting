@@ -17,19 +17,19 @@ namespace OnlineVoting.Application.Service.VoteService
     {
 
         private readonly IContext _context;
-       
 
-        public VotesService(IContext context,IMapper mapper)
+
+        public VotesService(IContext context)
         {
 
             _context = context;
-          
+
         }
         public async Task<ServiceResponce<string>> AddVote(string personalNumber, string number)
         {
 
             var response = new ServiceResponce<string>();
-           
+
             var userId = await GetUserIdByPersonalNumber(personalNumber);
             if (!UniqueVote(userId.Data).Success)
             {
@@ -51,8 +51,8 @@ namespace OnlineVoting.Application.Service.VoteService
                 {
                     Vote = 1,
                     Time = DateTime.Now,
-                    CandidateId =  candidateId.Data,
-                    UserId=userId.Data,
+                    CandidateId = candidateId.Data,
+                    UserId = userId.Data,
 
                 };
                 _context.votes.Add(newVote);
@@ -61,18 +61,18 @@ namespace OnlineVoting.Application.Service.VoteService
                 response.Message = "you vote is reflected.";
                 return response;
             }
-            
-            
+
+
 
         }
-        private ServiceResponce<bool>UniqueVote(int userId)
+        private ServiceResponce<bool> UniqueVote(int userId)
         {
-            var response=new ServiceResponce<bool>();
-           var userVoteUniuqe=_context.votes.AnyAsync(x=>x.Id==userId);
+            var response = new ServiceResponce<bool>();
+            var userVoteUniuqe = _context.votes.AnyAsync(x => x.Id == userId);
             if (userVoteUniuqe != null)
             {
                 response.Success = false;
-                
+
                 return response;
             }
             else response.Success = true;
@@ -109,22 +109,28 @@ namespace OnlineVoting.Application.Service.VoteService
             else response.Data = candidateId;
             return response;
         }
-
         public async Task<ServiceResponce<int>> GetAllVote(string candidateNumber)
         {
-            var response=new ServiceResponce<int>();
+            var response = new ServiceResponce<int>();
             var candidateId = await GetCandidateIdByNumber(candidateNumber);
-            if (candidateId.Success==false)
-            {                 
+            if (candidateId.Success == false)
+            {
                 response.Success = false;
                 response.Message = candidateId.Message;
                 return response;
             }
             var votes = _context.votes.Where(x => x.CandidateId == candidateId.Data).SumAsync(x => x.Vote);
-           
-            response.Data =await votes;
+
+            response.Data = await votes;
 
             return response;
+        }
+        public async Task<ServiceResponce<int>> GetAllVoterSum()
+        {
+            var response = new ServiceResponce<int>();
+            response.Data = await _context.votes.Select(x => x.UserId).CountAsync();
+            return response;
+
         }
     }
 }

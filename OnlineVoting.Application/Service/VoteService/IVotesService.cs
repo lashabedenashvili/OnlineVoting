@@ -12,5 +12,6 @@ namespace OnlineVoting.Application.Service.VoteService
     {
         Task<ServiceResponce<string>>AddVote(string personalNumber, string number);
         Task<ServiceResponce<int>> GetAllVote(string candidateNumber);
+        Task<ServiceResponce<int>> GetAllVoterSum();
     }
 }

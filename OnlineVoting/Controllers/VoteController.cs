@@ -19,13 +19,18 @@ namespace OnlineVoting.Api.Controllers
         [HttpPost("AddVote")]
         public async Task <ActionResult<ServiceResponce<string>>>AddVotes(AddVoteDto voter)
         {
-
             return Ok(await _voteService.AddVote(voter.PersonalNumber,voter.Number));
         }
+
         [HttpGet("GetAllVotes")]
         public async Task<ActionResult<ServiceResponce<int>>>GetAllVotes(string candidateNumber)
         {
             return Ok(await _voteService.GetAllVote(candidateNumber));
+        }
+        [HttpGet("GetAllUser")]
+        public async Task<ActionResult<ServiceResponce<int>>> GetAllUser()
+        {
+            return Ok(await _voteService.GetAllVoterSum());
         }
     }
 }
