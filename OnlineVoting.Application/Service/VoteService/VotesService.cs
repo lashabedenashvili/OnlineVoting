@@ -23,7 +23,7 @@ namespace OnlineVoting.Application.Service.VoteService
         {
 
             _context = context;
-            _mapper = mapper;
+          
         }
         public async Task<ServiceResponce<string>> AddVote(string personalNumber, string number)
         {
@@ -110,8 +110,21 @@ namespace OnlineVoting.Application.Service.VoteService
             return response;
         }
 
+        public async Task<ServiceResponce<int>> GetAllVote(string candidateNumber)
+        {
+            var response=new ServiceResponce<int>();
+            var candidateId = await GetCandidateIdByNumber(candidateNumber);
+            if (candidateId.Success==false)
+            {                 
+                response.Success = false;
+                response.Message = candidateId.Message;
+                return response;
+            }
+            var votes = _context.votes.Where(x => x.CandidateId == candidateId.Data).SumAsync(x => x.Vote);
+           
+            response.Data =await votes;
 
-
-
+            return response;
+        }
     }
 }

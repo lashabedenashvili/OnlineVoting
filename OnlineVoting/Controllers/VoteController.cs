@@ -22,5 +22,10 @@ namespace OnlineVoting.Api.Controllers
 
             return Ok(await _voteService.AddVote(voter.PersonalNumber,voter.Number));
         }
+        [HttpGet("GetAllVotes")]
+        public async Task<ActionResult<ServiceResponce<int>>>GetAllVotes(string candidateNumber)
+        {
+            return Ok(await _voteService.GetAllVote(candidateNumber));
+        }
     }
 }
